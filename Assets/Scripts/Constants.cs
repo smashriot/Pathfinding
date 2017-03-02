@@ -61,6 +61,9 @@ public static class Constants {
 	public const string PREFERENCE_PATHFINDING_DIAG_COST = "diagCost";
 	public const string PREFERENCE_PATHFINDING_BORDER_COST = "borderCost";
 	public const string PREFERENCE_PATHFINDING_MAX_CHECKS = "maxChecks";
+	public const string PREFERENCE_PATHFINDING_WATER_COST = "waterCost";
+	public const string PREFERENCE_PATHFINDING_GRASS_COST = "grassCost";
+	public const string PREFERENCE_PATHFINDING_DIRT_COST = "dirtCost";
 
 	// pf costs
 	public const int PATHFINDING_CONFIG_DEFAULT_ADJ_COST = 10;
@@ -68,6 +71,14 @@ public static class Constants {
 	public const int PATHFINDING_CONFIG_DEFAULT_BORDER_COST = 20;     // 2x adjacent
 	public const int PATHFINDING_CONFIG_DEFAULT_MAX_CHECKS = 500;
 	public const int PATHFINDING_CONFIG_FINAL_MAX_CHECKS = 999;     // limited by mesh size with debug labels.
+
+	// tile types
+	public const int TILE_ID_WALL = 1;
+	public const int TILE_ID_GRASS = 2;
+	public const int TILE_ID_WATER = 3;
+	public const int TILE_ID_DIRT = 4;
+	public const int TILE_ID_LAVA = 5;
+	public const int TILE_ID_SAND = 6;
 
 	// animal
 	public const int MAX_CATS = 10;

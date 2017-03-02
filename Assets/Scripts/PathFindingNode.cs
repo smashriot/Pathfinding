@@ -16,6 +16,7 @@ public class PathFindingNode {
 	public int nodeScoreAbs = 0;    // score it took to get here
 	public int nodeScoreEst = 0;    // the estimate from how far to the goal
 	public bool borderNode = false; // if this is a border node, extra cost may be added in
+	public int nodeScoreExtra = 0; // water, dirt, sand, etc.
 	public PathFindingNode nodeParent = null;
 
 	// -------------------------------------------------------------------------------------------------
@@ -60,9 +61,16 @@ public class PathFindingNode {
 	}
 
 	// -------------------------------------------------------------------------------------------------
+	// if water, sand, dirt etc cost more, add them here.
+	// -------------------------------------------------------------------------------------------------
+	public void setScoreExtra(int score){
+		this.nodeScoreExtra = score;
+	}
+
+	// -------------------------------------------------------------------------------------------------
 	// combo of abs and est
 	// -------------------------------------------------------------------------------------------------
 	public int getNodeScore(){
-		return this.nodeScoreAbs + this.nodeScoreEst;
+		return this.nodeScoreAbs + this.nodeScoreEst + this.nodeScoreExtra;
 	}
 }

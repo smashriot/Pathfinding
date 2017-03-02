@@ -446,8 +446,8 @@ public class MovementComponent : MonoBehaviour {
 				TextMesh textMesh = tileInstance.transform.Find("text").gameObject.GetComponent<TextMesh>();
 				// full info close
 				if (pathNode.nodeNumber < 300){
-					if (openList){ textMesh.text = "OPEN  S:" + pathNode.getNodeScore() + "\n\n\n\nA:" + pathNode.nodeScoreAbs + "   E:" + pathNode.nodeScoreEst; }
-					else { textMesh.text = "CLOSE S:" + pathNode.getNodeScore() + "\n\n\n\nA:" + pathNode.nodeScoreAbs + "   E:" + pathNode.nodeScoreEst; }
+					if (openList){ textMesh.text = "OPEN  S:" + pathNode.getNodeScore() + "\n\nT:" + pathNode.nodeScoreExtra + "             \n\nA:" + pathNode.nodeScoreAbs + "   E:" + pathNode.nodeScoreEst; }
+					else { textMesh.text = "CLOSE S:" + pathNode.getNodeScore() + "\n\nT:" + pathNode.nodeScoreExtra + "             \n\nA:" + pathNode.nodeScoreAbs + "   E:" + pathNode.nodeScoreEst; }
 				}
 				// lesser info farther away
 				else {

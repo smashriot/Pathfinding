@@ -122,12 +122,22 @@ public class TilemapLayer : MonoBehaviour {
 
 					GameObject tilePrefab = null;
 					// create the tile
-					if (tileNum == 1){ tilePrefab = wallPrefab; }
-					else if (tileNum == 2){ tilePrefab = grassPrefab; }
-					else if (tileNum == 3){ tilePrefab = waterPrefab; }
-					else if (tileNum == 4){ tilePrefab = dirtPrefab; }
-					else if (tileNum == 5){ tilePrefab = lavaPrefab; }
-					else if (tileNum == 6){ tilePrefab = sandPrefab; }
+					switch (tileNum){
+						case Constants.TILE_ID_WALL:
+							tilePrefab = wallPrefab; break;
+						case Constants.TILE_ID_GRASS:
+							tilePrefab = grassPrefab; break;
+						case Constants.TILE_ID_WATER:
+							tilePrefab = waterPrefab; break;
+						case Constants.TILE_ID_DIRT:
+							tilePrefab = dirtPrefab; break;
+						//case Constants.TILE_ID_LAVA:
+						//	tilePrefab = lavaPrefab; break;
+						//case Constants.TILE_ID_SAND:
+						//	tilePrefab = sandPrefab; break;
+						default:
+							tilePrefab = grassPrefab; break;
+					}
 
 					// create it
 					if (tilePrefab != null){

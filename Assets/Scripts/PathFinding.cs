@@ -15,9 +15,14 @@ public class PathFinding {
 	// config via preference
 	private int PF_COST_ADJACENT = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_ADJ_COST, Constants.PATHFINDING_CONFIG_DEFAULT_ADJ_COST);
 	private int PF_COST_DIAGONAL = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_DIAG_COST, Constants.PATHFINDING_CONFIG_DEFAULT_DIAG_COST);
+	private int PF_COST_WATER = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_WATER_COST, 0);
+	private int PF_COST_DIRT = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_DIRT_COST, 0);
+	private int PF_COST_GRASS = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_GRASS_COST, 0);
+
 	private const int PF_NODE_WALL = 0;
 	private const int PF_NODE_BORDER = 1;
 	private const int PF_NODE_OPEN = 2;
+	private int[] baseArray;        // array of base layer tile types: 0-N
 	private int[] nodeArray;        // array of ints if walkable or not: 0: not walkable, 1: border, 2: walkable
 	private int nodeArrayWidth = 0;
 	private int nodeArrayHeight = 0;
@@ -30,32 +35,36 @@ public class PathFinding {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	public PathFinding(int[] baseNodeArray, int width, int height){
+	public PathFinding(int[] baseNodeArray, int[] baseLayerArray, int width, int height){
 
 		// node array
 		this.nodeArrayWidth = width;
 		this.nodeArrayHeight = height;
+		this.baseArray = new int[(int)(this.nodeArrayWidth * this.nodeArrayHeight)];
 		this.nodeArray = new int[(int)(this.nodeArrayWidth * this.nodeArrayHeight)];
 
 		// set each nodeArray value to wall/open based on source array
 		for (int y = 0; y < this.nodeArrayHeight; y++){
 			for (int x = 0; x < this.nodeArrayWidth; x++){
-				int baseNodeID = baseNodeArray[(int)(x + (y * this.nodeArrayWidth))]; // array of 0/1s
-				Debug.Log("X:" + x + " Y:" + y + " TILEID:" + baseNodeID);
+				int arrayPos = (int)(x + (y * this.nodeArrayWidth));
+				int baseNodeID = baseNodeArray[arrayPos]; // array of 0/1s
 
 				// not walkable
 				if (baseNodeID > 0){
-					this.nodeArray[(int)(x + (y * this.nodeArrayWidth))] = PF_NODE_WALL;
+					this.nodeArray[arrayPos] = PF_NODE_WALL;
 				}
 				else {
-					this.nodeArray[(int)(x + (y * this.nodeArrayWidth))] = PF_NODE_OPEN;
+					this.nodeArray[arrayPos] = PF_NODE_OPEN;
 				}
+
+				// and set base layer for extra cost based on ground tile type
+				this.baseArray[arrayPos] = baseLayerArray[arrayPos];
 			}
 		}
 
 		// set which nodes are border nodes now
-		for (int x = 0; x < this.nodeArrayWidth; x++){
-			for (int y = 0; y < this.nodeArrayHeight; y++){
+		for (int y = 0; y < this.nodeArrayHeight; y++){
+			for (int x = 0; x < this.nodeArrayWidth; x++){
 				// for each open node
 				if (this.getNodeAtPos(x,y) == PF_NODE_OPEN){
 					// check if it is a border node and set if so
@@ -65,6 +74,23 @@ public class PathFinding {
 				}
 			}
 		}
+	}
+
+	// ------------------------------------------------------------------------
+	// extra costs for water etc
+	// ------------------------------------------------------------------------
+	public int getExtraTileCost(int x, int y){
+
+		int tilePos = x + (y * this.nodeArrayWidth);
+		if (tilePos < this.baseArray.Length){
+			int tileID = this.baseArray[tilePos];
+
+			if (tileID == Constants.TILE_ID_GRASS){ return PF_COST_GRASS; }
+			else if (tileID == Constants.TILE_ID_WATER){ return PF_COST_WATER; }
+			else if (tileID == Constants.TILE_ID_DIRT){ return PF_COST_DIRT; }
+		}
+
+		return 0;
 	}
 
 	// -------------------------------------------------------------------------------------------------
@@ -336,11 +362,15 @@ public class PathFinding {
 						// is this a border node?
 						bool borderNode = this.isBorderNode((int)nodePosition.x, (int)nodePosition.y);
 
+						// extra cost base on tile type? (e.g. grass, water)
+						int extraCost = this.getExtraTileCost((int)nodePosition.x, (int)nodePosition.y);
+
 						// create new node
 						PathFindingNode newNode = new PathFindingNode(nodePosition, borderNode);
 						newNode.setScoreEstimate(endPosition);
 						newNode.setScoreAbs(currentNode.nodeScoreAbs + absCost); // absCost is the PF_COST_ADJACENT/PF_COST_DIAGONAL
 						newNode.setNodeParent(currentNode); // set currentNode as parent of the new node
+						newNode.setScoreExtra(extraCost);
 
 						// add this node to the open list
 						newNode.nodeNumber = this.nodeNumber++;

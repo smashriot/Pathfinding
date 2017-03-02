@@ -22,6 +22,9 @@ public class GameUI : MonoBehaviour {
 	public InputField borderCostInputField;
 	public InputField diagCostInputField;
 	public InputField adjCostInputField;
+	public InputField waterCostInputField;
+	public InputField dirtCostInputField;
+	public InputField grassCostInputField;
 
 	// -------------------------------------------------------------------------------------------------
 	// -------------------------------------------------------------------------------------------------
@@ -42,12 +45,18 @@ public class GameUI : MonoBehaviour {
 		this.borderCostInputField.onEndEdit.AddListener(delegate { borderCostChanged(); });
 		this.diagCostInputField.onEndEdit.AddListener(delegate { diagCostChanged(); });
 		this.adjCostInputField.onEndEdit.AddListener(delegate { adjCostChanged(); });
+		this.waterCostInputField.onEndEdit.AddListener(delegate { waterCostChanged(); });
+		this.dirtCostInputField.onEndEdit.AddListener(delegate { dirtCostChanged(); });
+		this.grassCostInputField.onEndEdit.AddListener(delegate { grassCostChanged(); });
 
 		// get current field value (pref, default value)
 		this.maxChecksInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_MAX_CHECKS, Constants.PATHFINDING_CONFIG_DEFAULT_MAX_CHECKS).ToString();
 		this.borderCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_BORDER_COST, Constants.PATHFINDING_CONFIG_DEFAULT_BORDER_COST).ToString();
 		this.diagCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_DIAG_COST, Constants.PATHFINDING_CONFIG_DEFAULT_DIAG_COST).ToString();
 		this.adjCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_ADJ_COST, Constants.PATHFINDING_CONFIG_DEFAULT_ADJ_COST).ToString();
+		this.waterCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_WATER_COST, 0).ToString();
+		this.dirtCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_DIRT_COST, 0).ToString();
+		this.grassCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_GRASS_COST, 0).ToString();
 	}
 
 	// ------------------------------------------------------------------------
@@ -160,35 +169,49 @@ public class GameUI : MonoBehaviour {
 			fieldValue = max;
 			inputField.text = fieldValue.ToString();
 		}
-		  PlayerPrefs.SetInt(preference, fieldValue);
+		PlayerPrefs.SetInt(preference, fieldValue);
 		PlayerPrefs.Save();
 	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	public void maxChecksChanged(){
-
 		this.validateAndSaveField(this.maxChecksInputField, Constants.PREFERENCE_PATHFINDING_MAX_CHECKS, Constants.PATHFINDING_CONFIG_FINAL_MAX_CHECKS);
-	 }
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	public void borderCostChanged(){
-
-	   this.validateAndSaveField(this.borderCostInputField, Constants.PREFERENCE_PATHFINDING_BORDER_COST, 100);
+		this.validateAndSaveField(this.borderCostInputField, Constants.PREFERENCE_PATHFINDING_BORDER_COST, 100);
 	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	public void diagCostChanged(){
-
-	   this.validateAndSaveField(this.diagCostInputField, Constants.PREFERENCE_PATHFINDING_DIAG_COST, 100);
+		this.validateAndSaveField(this.diagCostInputField, Constants.PREFERENCE_PATHFINDING_DIAG_COST, 100);
 	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	public void adjCostChanged(){
-
 		this.validateAndSaveField(this.adjCostInputField, Constants.PREFERENCE_PATHFINDING_ADJ_COST, 100);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	public void waterCostChanged(){
+		this.validateAndSaveField(this.waterCostInputField, Constants.PREFERENCE_PATHFINDING_WATER_COST, 999);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	public void dirtCostChanged(){
+		this.validateAndSaveField(this.dirtCostInputField, Constants.PREFERENCE_PATHFINDING_DIRT_COST, 999);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	public void grassCostChanged(){
+		this.validateAndSaveField(this.grassCostInputField, Constants.PREFERENCE_PATHFINDING_GRASS_COST, 999);
 	}
 }

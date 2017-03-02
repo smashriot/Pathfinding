@@ -69,8 +69,8 @@ public class Tilemap {
 		}
 
 		// after tilemap is loaded, setup pathfinding
-		if (this.collisionLayer != null){
-			this.pathFinding = new PathFinding(this.collisionLayer.getTileArray(), this.collisionLayer.tilesWide, this.collisionLayer.tilesHigh);
+		if (this.collisionLayer != null && this.backgroundLayer != null){
+			this.pathFinding = new PathFinding(this.collisionLayer.getTileArray(), this.backgroundLayer.getTileArray(), this.collisionLayer.tilesWide, this.collisionLayer.tilesHigh);
 		}
 	}
 
