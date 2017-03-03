@@ -19,7 +19,10 @@ public class GameMain : MonoBehaviour {
 	private GameObject catPrefab;
 	private GameObject fishPrefab;
 	private GameObject rootObjectsGO;
+	private GameObject tileDebugGO;
 	private int catsSpawned = 0;
+	private int mapNumber = 0;
+	private PathfindingVisualization pathfindingVisualization;
 
 	// ------------------------------------------------------------------------
 	// Use this for initialization
@@ -60,19 +63,24 @@ public class GameMain : MonoBehaviour {
 
 		// nuke the remains of anything old and create new
 		this.resetWorld();
+		this.mapNumber = mapNumber;
 
 		// reset vars
 		this.catsSpawned = 0;
 		Time.timeScale = 1.0f; // in case paused
 
 		// create the new tilemap
-		this.tilemap = new Tilemap(mapNumber);
+		this.tilemap = new Tilemap(this.mapNumber);
+
+		// reattach pf
+		this.pathfindingVisualization = this.gameObject.AddComponent<PathfindingVisualization>();
+		this.pathfindingVisualization.attachPathfinding(this.tilemap.pathFinding);
 
 		// update camera pan for this map to top left
 		this.panCamera();
 
 		// reset game ui state
-		this.gameUI.reset();
+		this.gameUI.reset(); // called after world is reset/recreated
 	}
 
 	// ------------------------------------------------------------------------
@@ -83,11 +91,13 @@ public class GameMain : MonoBehaviour {
 		Object.DestroyImmediate(GameObject.Find(Constants.TILEMAP_GO));
 		Object.DestroyImmediate(GameObject.Find(Constants.OBJECTS_GO));
 		Object.DestroyImmediate(GameObject.Find(Constants.TILEMAP_DEBUG_GO));
+		if (this.tileDebugGO != null){ Object.DestroyImmediate(this.tileDebugGO); } // make sure it dies
+		Object.DestroyImmediate(this.pathfindingVisualization); // remove pf vis too
 
 		// create new root for tiles/objects
 		new GameObject(Constants.TILEMAP_GO);
 		this.rootObjectsGO = new GameObject(Constants.OBJECTS_GO);
-		// TILEMAP_DEBUG_GO will be created in movement component as needed
+		this.tileDebugGO = new GameObject(Constants.TILEMAP_DEBUG_GO);
 
 		// reset camera size/postiion
 		this.mainCamera.orthographicSize = Constants.CAMERA_ZOOM_DEFAULT;
@@ -326,7 +336,10 @@ public class GameMain : MonoBehaviour {
 				GameObject catInstance = (GameObject)Instantiate(catPrefab, new Vector3 (this.mouseWorldPos.x, this.mouseWorldPos.y, 0f), Quaternion.identity);
 				catInstance.transform.SetParent(this.rootObjectsGO.transform);
 				Cat catComponent = (Cat)catInstance.GetComponent(typeof(Cat));
-				catComponent.enablePathfinding(this.tilemap.pathFinding);
+				catComponent.enablePathfinding(this.tilemap.pathFinding, this.pathfindingVisualization);
+
+				// track this cat
+				this.pathfindingVisualization.trackCat(catInstance);
 			}
 		}
 	}

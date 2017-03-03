@@ -15,7 +15,7 @@ public class Cat : MonoBehaviour {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	public void enablePathfinding(PathFinding globalPathFinding){
+	public void enablePathfinding(PathFinding globalPathFinding, PathfindingVisualization pfVis){
 
 		// setup pathfinding and the rigidbody reference
 		this.movementComponent = MovementComponent.Create(this.gameObject);
@@ -23,7 +23,7 @@ public class Cat : MonoBehaviour {
 		int pfMaxChecks = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_MAX_CHECKS, Constants.PATHFINDING_CONFIG_DEFAULT_MAX_CHECKS);
 		this.movementComponent.init(Vector2.right * Constants.PHYSICS_ANIMAL_MOVE_FORCE, Constants.PHYSICS_ANIMAL_TURNING_RATE, Constants.PATHFINDING_ANIMAL_UPDATE_INTERVAL, pfMaxChecks);
 		this.movementComponent.enablePathfinding(globalPathFinding); // point to main PathFinding of the TileMap
-		this.movementComponent.enableDebug(globalPathFinding);
+		this.movementComponent.setPathfindingVis(pfVis);
 	}
 
 	// ------------------------------------------------------------------------

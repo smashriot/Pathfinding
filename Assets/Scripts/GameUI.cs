@@ -16,6 +16,7 @@ public class GameUI : MonoBehaviour {
 	public Button m4Button;
 	public Button m5Button;
 	public Button pfVisButton;
+	private Text pfVisButtonText;
 	public Button pauseButton;
 	public Button stemButton;
 	public InputField maxChecksInputField;
@@ -25,10 +26,14 @@ public class GameUI : MonoBehaviour {
 	public InputField waterCostInputField;
 	public InputField dirtCostInputField;
 	public InputField grassCostInputField;
+	public GameObject worldDebugGO;
 
 	// -------------------------------------------------------------------------------------------------
 	// -------------------------------------------------------------------------------------------------
 	public void Start(){
+
+		// for text of pf vis button
+		this.pfVisButtonText = this.pfVisButton.GetComponentInChildren<Text>();
 
 		// buttons
 		this.m1Button.onClick.AddListener(delegate { m1ButtonClicked(); });
@@ -57,6 +62,9 @@ public class GameUI : MonoBehaviour {
 		this.waterCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_WATER_COST, 0).ToString();
 		this.dirtCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_DIRT_COST, 0).ToString();
 		this.grassCostInputField.text = PlayerPrefs.GetInt(Constants.PREFERENCE_PATHFINDING_GRASS_COST, 0).ToString();
+
+		// parent to debug root
+		this.worldDebugGO = GameObject.Find(Constants.TILEMAP_DEBUG_GO);
 	}
 
 	// ------------------------------------------------------------------------
@@ -68,6 +76,9 @@ public class GameUI : MonoBehaviour {
 		Time.timeScale = 1.0f;
 		buttonText = this.pauseButton.GetComponentInChildren<Text>();
 		buttonText.text = "Pause";
+
+		// parent to debug root
+		this.worldDebugGO = GameObject.Find(Constants.TILEMAP_DEBUG_GO);
 	}
 
 	// ------------------------------------------------------------------------
@@ -119,24 +130,15 @@ public class GameUI : MonoBehaviour {
 	// ------------------------------------------------------------------------
 	public void togglePathfindingClicked(){
 
-		GameObject[] foundGameObjects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
-		if (foundGameObjects.Length > 0){
-			for (int i=0; i<foundGameObjects.Length; i++){
-				GameObject currentGO = foundGameObjects[i];
-				if (currentGO.name == Constants.TILEMAP_DEBUG_GO){
-					// toggle active state
-					if (!currentGO.activeInHierarchy){
-						currentGO.SetActive(true);
-						Text buttonText = this.pfVisButton.GetComponentInChildren<Text>();
-						buttonText.text = "Hide";
-					}
-					else {
-						currentGO.SetActive(false);
-						Text buttonText = this.pfVisButton.GetComponentInChildren<Text>();
-						buttonText.text = "Show";
-					}
-				}
-			}
+		// currently showing, so hide and set button to show
+		if (this.pfVisButtonText.text == "Hide"){
+			this.pfVisButtonText.text = "Show";
+			this.worldDebugGO.SetActive(false);
+		}
+		// currently hiding, so show and set button to hide
+		else {
+			this.pfVisButtonText.text = "Hide";
+			this.worldDebugGO.SetActive(true);
 		}
 	}
 
