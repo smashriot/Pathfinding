@@ -19,6 +19,7 @@ public class MovementComponent : MonoBehaviour {
 	private float targetFacingAngle = 0.0f;
 	private Vector2 currentTargetPosition = new Vector2(0,0);
 	private Vector3 moveForceVector = new Vector3(0,0,0);
+	private float moveForceModifier = 1.0f;
 	private float turningRate = 5.0f;
 	private bool useRandomTarget = false;
 	private float randomTargetRange = 0;
@@ -48,6 +49,14 @@ public class MovementComponent : MonoBehaviour {
 		this.maxPathfindingChecks = newMaxPathfindingChecks;
 		if (this.maxPathfindingChecks > Constants.PATHFINDING_CONFIG_FINAL_MAX_CHECKS){ this.maxPathfindingChecks = Constants.PATHFINDING_CONFIG_FINAL_MAX_CHECKS; }
 		targetUpdateTime = UnityEngine.Random.Range(0, Constants.PATHFINDING_LOCATE_TARGET_INTERVAL);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	public void IncreaseMoveForceModifier(float increaseAmount){
+
+		this.moveForceModifier += increaseAmount;
+		this.moveForceModifier = Mathf.Clamp(this.moveForceModifier, Constants.MOVEMENT_FORCE_MODIFIER_MIN, Constants.MOVEMENT_FORCE_MODIFIER_MAX);
 	}
 
 	// ------------------------------------------------------------------------
@@ -177,7 +186,7 @@ public class MovementComponent : MonoBehaviour {
 
 				// face new target and move
 				this.movementTransform.eulerAngles = new Vector3(0,0, targetFacingAngle);
-				this.movementRigidbody.AddRelativeForce(this.moveForceVector);
+				this.movementRigidbody.AddRelativeForce(this.moveForceModifier * this.moveForceVector);
 			 }
 		}
 	}

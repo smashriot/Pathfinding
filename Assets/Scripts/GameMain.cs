@@ -20,7 +20,6 @@ public class GameMain : MonoBehaviour {
 	private GameObject fishPrefab;
 	private GameObject rootObjectsGO;
 	private GameObject tileDebugGO;
-	private int catsSpawned = 0;
 	private int mapNumber = 0;
 	private PathfindingVisualization pathfindingVisualization;
 
@@ -66,7 +65,6 @@ public class GameMain : MonoBehaviour {
 		this.mapNumber = mapNumber;
 
 		// reset vars
-		this.catsSpawned = 0;
 		Time.timeScale = 1.0f; // in case paused
 
 		// create the new tilemap
@@ -321,6 +319,15 @@ public class GameMain : MonoBehaviour {
 		}
 	}
 
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	private int CountAliveCats(){
+
+		return GameObject.FindGameObjectsWithTag(Constants.GAMEOBJECT_TAG_CAT).Length;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	private void spawnCat(){
@@ -328,9 +335,8 @@ public class GameMain : MonoBehaviour {
 		// if clicked inside the map border
 		if (this.isInsideMap(this.mouseWorldPos)){
 
-			// if still under spawn cap
-			if (this.catsSpawned < Constants.MAX_CATS){
-				this.catsSpawned++;
+			// if still under spawn cap of alive cats
+			if (this.CountAliveCats() < Constants.MAX_CATS){
 
 				// instantiate
 				GameObject catInstance = (GameObject)Instantiate(catPrefab, new Vector3 (this.mouseWorldPos.x, this.mouseWorldPos.y, 0f), Quaternion.identity);

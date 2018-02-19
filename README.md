@@ -1,14 +1,13 @@
 ------------------------------------------------------------------------
 A* Pathfinding
 Created by Jesse Ozog (code@smashriot.com) on 2016/04/18
-Copyright 2016 SmashRiot, LLC. All rights reserved.
+Copyright 2018 SmashRiot, LLC. All rights reserved.
 http://smashriot.com/stem/pf/
 ------------------------------------------------------------------------
 This is an example project / WebGL demo to accompany the A* Pathfinding talk
 
 Info/Talk: http://smashriot.com/stem/pf/
-
-WebGL Demo: http://smashriot.com/ai/Pathfinding/
+WebGL Demo: http://smashriot.com/stem/pf/demo
 
 ------------------------------------------------------------------------
 TODO:
@@ -17,7 +16,6 @@ TODO:
 1. Make cats get bigger / faster / explode when they eat fish
 2. Make randomly generated maze level.
 3. Fix UI size.
-
 
 ------------------------------------------------------------------------
 Instructions:
