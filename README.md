@@ -1,6 +1,4 @@
-------------------------------------------------------------------------
 # A* Pathfinding
-------------------------------------------------------------------------
 
 * Created by Jesse Ozog (code@smashriot.com) on 2016/04/18
 * Copyright 2018 SmashRiot, LLC. All rights reserved.
@@ -11,9 +9,8 @@ This is an example project / WebGL demo to accompany the A* Pathfinding talk
 * Info/Talk: http://smashriot.com/stem/pf/
 * WebGL Demo: http://smashriot.com/example/pf/
 
-------------------------------------------------------------------------
 ## Instructions:
-------------------------------------------------------------------------
+
 * Left click: Place cat (10 max)
 * Right click: Place fish
 * WASD/Arrows/Mouse: Move Camera
@@ -23,15 +20,11 @@ This is an example project / WebGL demo to accompany the A* Pathfinding talk
 * P key: Pause
 * Esc key: Quit
 
-------------------------------------------------------------------------
 ## Talk
-------------------------------------------------------------------------
 
 * See AIPathfinding_2016.pdf for information on this project.
 
-------------------------------------------------------------------------
 ## Resources:
-------------------------------------------------------------------------
 
 Here are some additional resources to learn more about A* Pathfinding:
 
