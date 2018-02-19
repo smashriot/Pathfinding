@@ -55,7 +55,8 @@ public class Cat : MonoBehaviour {
 		if (this.fishEaten < 0.0f){ this.fishEaten = 0.0f; }
 
 		// update speed and size based on current fish eaten amount
-		this.transform.localScale = Vector3.one + (this.fishEaten * Constants.CAT_SCALE_PER_FISH);
+		this.bodySprite.transform.localScale = Vector3.one + (this.fishEaten * Constants.CAT_SCALE_PER_FISH);
+		this.shadowSprite.transform.localScale = this.bodySprite.transform.localScale;
 		this.movementComponent.SetMoveForceModifier(this.fishEaten * Constants.CAT_MOVEMENT_INCREASE_PER_FISH);
 
 		// change color near max
@@ -119,6 +120,7 @@ public class Cat : MonoBehaviour {
 	private IEnumerator DestroyCat(){
 
 		this.bodySprite.enabled = false;
+		this.shadowSprite.enabled = false;
 		this.particles.Play();
 		yield return new WaitForSeconds(1.0f);
 		Object.Destroy(this.gameObject);
