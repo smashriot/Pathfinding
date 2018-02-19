@@ -9,7 +9,7 @@ using System.Collections;
 public class Cat : MonoBehaviour {
 
 	private MovementComponent movementComponent;
-	private int fishEaten = 0;
+	private float fishEaten = 0f;
 	private ParticleSystem particles;
 
 	// set these in the prefab
@@ -42,6 +42,33 @@ public class Cat : MonoBehaviour {
 
 			// keep cat facing left or right (not spinning in a circle)
 			this.faceCat();
+			this.UpdateFishEaten();
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	private void UpdateFishEaten(){
+
+		// remove a bit of fish every tick
+		this.fishEaten -= Constants.CAT_FISH_DECAY_RATE_FRAME;
+		if (this.fishEaten < 0.0f){ this.fishEaten = 0.0f; }
+
+		// update speed and size based on current fish eaten amount
+		this.transform.localScale = Vector3.one + (this.fishEaten * Constants.CAT_SCALE_PER_FISH);
+		this.movementComponent.SetMoveForceModifier(this.fishEaten * Constants.CAT_MOVEMENT_INCREASE_PER_FISH);
+
+		// change color near max
+		if (this.fishEaten > (Constants.CAT_MAX_FISH - 1.0f)){
+			this.bodySprite.color = Constants.CAT_COLOR_FISH_EATEN_DANGER;
+		}
+		// warning
+		else if (this.fishEaten > (Constants.CAT_MAX_FISH - 3.0f)){
+			this.bodySprite.color = Constants.CAT_COLOR_FISH_EATEN_WARNING;
+		}
+		// normal
+		else {
+			this.bodySprite.color = Constants.CAT_COLOR_FISH_EATEN_NORMAL;
 		}
 	}
 
@@ -69,11 +96,11 @@ public class Cat : MonoBehaviour {
 		// hit fish?
 		if (this.bodySprite.enabled && coll.gameObject.CompareTag(Constants.GAMEOBJECT_TAG_FISH)){
 
-			// cat ate a fish
+			// find new fish to eat
 			this.movementComponent.retargetPathfinding();
-			this.fishEaten++;
-			this.transform.localScale += Constants.CAT_SCALE_PER_FISH;
-			this.movementComponent.IncreaseMoveForceModifier(Constants.CAT_MOVEMENT_INCREASE_PER_FISH);
+
+			// cat ate a fish (per meal may be fractional)
+			this.fishEaten += Constants.CAT_FISH_PER_MEAL;
 
 			// if more than 10 fish then explode (otherwise scale gets too big and it blocks)
 			if (this.fishEaten > Constants.CAT_MAX_FISH){

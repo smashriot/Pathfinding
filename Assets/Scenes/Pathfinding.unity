@@ -1725,7 +1725,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Left Click: Place Cat
+  m_Text: 'Left Click: Place Cat (10 Max)
 
     Right Click: Set Fish
 

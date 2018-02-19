@@ -53,9 +53,9 @@ public class MovementComponent : MonoBehaviour {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	public void IncreaseMoveForceModifier(float increaseAmount){
+	public void SetMoveForceModifier(float increaseAmount){
 
-		this.moveForceModifier += increaseAmount;
+		this.moveForceModifier = 1.0f + increaseAmount;
 		this.moveForceModifier = Mathf.Clamp(this.moveForceModifier, Constants.MOVEMENT_FORCE_MODIFIER_MIN, Constants.MOVEMENT_FORCE_MODIFIER_MAX);
 	}
 

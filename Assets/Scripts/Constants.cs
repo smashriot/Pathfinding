@@ -84,12 +84,15 @@ public static class Constants {
 	public const int MAX_CATS = 10;
 	public const float PHYSICS_ANIMAL_MOVE_FORCE = 30f;
 	public const float PHYSICS_ANIMAL_TURNING_RATE = 10.0f;
-	public const int CAT_MAX_FISH = 10;
-	public static Vector3 CAT_SCALE_PER_FISH = new Vector3(0.05f, 0.05f, 0.05f);
-	public const float CAT_MOVEMENT_INCREASE_PER_FISH = 0.1f;
-
-	// movement
+	public const float CAT_MAX_FISH = 10.0f;
+	public const float CAT_FISH_PER_MEAL = 0.5f; // less than 1.0 makes the meter go up slower
+	public const float CAT_FISH_DECAY_RATE_FRAME = 0.002f;
+	public static Vector3 CAT_SCALE_PER_FISH = new Vector3(0.05f, 0.05f, 0.05f); // max 1.5 scale at 10 fish
+	public const float CAT_MOVEMENT_INCREASE_PER_FISH = 0.1f; // max 2.0 at 10 fish
 	public const float MOVEMENT_FORCE_MODIFIER_MIN = 1.0f;
-	public const float MOVEMENT_FORCE_MODIFIER_MAX = 5.0f;
+	public const float MOVEMENT_FORCE_MODIFIER_MAX = 2.0f;
+	public static Color CAT_COLOR_FISH_EATEN_DANGER = new Color(1.0f, 0.5f, 0.5f, 1.0f);
+	public static Color CAT_COLOR_FISH_EATEN_WARNING = new Color(1.0f, 0.75f, 0.75f, 1.0f);
+	public static Color CAT_COLOR_FISH_EATEN_NORMAL = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
 } // eof
